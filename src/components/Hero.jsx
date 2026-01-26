@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-
 
 const Hero = () => {
   const coreServices = [
@@ -11,9 +9,47 @@ const Hero = () => {
     { title: "Customer Data Storage", desc: "GDPR-compliant databases for secure user information.", icon: "🔒" }
   ];
 
+  // Typing animation state
+  const names = ["John", "Doe", "John Doe"];
+  const [typedNames, setTypedNames] = useState(["", "", ""]);
+  const [currentNameIndex, setCurrentNameIndex] = useState(0);
+  const [currentCharIndex, setCurrentCharIndex] = useState(0);
+
+  useEffect(() => {
+    const typingSpeed = 150; // ms per character
+    const delayAfterFullName = 1000; // delay before resetting
+
+    if (currentNameIndex >= names.length) {
+      // All names typed, reset after delay
+      const resetTimeout = setTimeout(() => {
+        setTypedNames(["", "", ""]);
+        setCurrentNameIndex(0);
+        setCurrentCharIndex(0);
+      }, delayAfterFullName);
+      return () => clearTimeout(resetTimeout);
+    }
+
+    const timeout = setTimeout(() => {
+      setTypedNames(prev => {
+        const newTyped = [...prev];
+        newTyped[currentNameIndex] = names[currentNameIndex].slice(0, currentCharIndex + 1);
+        return newTyped;
+      });
+
+      if (currentCharIndex + 1 === names[currentNameIndex].length) {
+        // Move to next name after finishing current
+        setCurrentNameIndex(prev => prev + 1);
+        setCurrentCharIndex(0);
+      } else {
+        setCurrentCharIndex(prev => prev + 1);
+      }
+    }, typingSpeed);
+
+    return () => clearTimeout(timeout);
+  }, [currentCharIndex, currentNameIndex]);
+
   return (
     <div className="bg-[#050505] text-white selection:bg-purple-500/30 font-sans overflow-x-hidden">
-      
       
       <style>
         {`
@@ -40,7 +76,7 @@ const Hero = () => {
         `}
       </style>
 
-      
+      {/* ===== Hero Section ===== */}
       <section className="min-h-[90vh] flex flex-col justify-center px-6 lg:px-24 relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
           <div className="space-y-8 animate-fade-in-up">
@@ -57,15 +93,22 @@ const Hero = () => {
             </div>
           </div>
           
-          
+          {/* ===== System Preview Section with Sequential Typing Animation ===== */}
           <div className="relative animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             <div className="absolute -inset-4 bg-purple-600/10 blur-3xl animate-pulse-glow"></div>
             <div className="relative bg-[#0d0d0d] border border-purple-500/40 rounded-3xl p-10 shadow-2xl">
               <p className="text-gray-600 text-[10px] mb-8 uppercase tracking-[0.3em] font-bold">System Preview</p>
+
               <div className="space-y-5">
-                {[1, 2, 3].map((_, i) => (
-                  <div key={i} className="w-full h-10 bg-white/5 rounded-lg border border-white/10 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }}></div>
+                {typedNames.map((name, i) => (
+                  <div
+                    key={i}
+                    className="w-full h-10 bg-white/5 rounded-lg border border-white/10 flex items-center justify-start px-4 text-sm font-mono"
+                  >
+                    {name}
+                  </div>
                 ))}
+
                 <div className="mt-8 py-4 bg-purple-600/20 border border-purple-500/50 text-purple-400 text-center rounded-xl text-sm font-bold tracking-widest uppercase">
                   AI Processing Enabled
                 </div>
@@ -75,7 +118,7 @@ const Hero = () => {
         </div>
       </section>
 
-      
+      {/* ===== Pro Cyber Engine Section ===== */}
       <section className="py-24 bg-black/50 border-y border-white/5 relative">
         <div className="max-w-7xl mx-auto px-6 lg:px-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
@@ -105,7 +148,7 @@ const Hero = () => {
         </div>
       </section>
 
-   
+      {/* ===== Core Solutions Section ===== */}
       <section className="py-32 px-6 lg:px-24">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-20">
@@ -121,22 +164,16 @@ const Hero = () => {
                 key={i} 
                 className="group relative p-8 bg-white/[0.03] border border-white/5 rounded-3xl transition-all duration-500 hover:bg-white/[0.06] hover:border-purple-500/50 hover:-translate-y-3 cursor-pointer overflow-hidden"
               >
-                {/* Background Hover Glow */}
                 <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-600/10 rounded-full blur-3xl group-hover:bg-purple-600/20 transition-all duration-500"></div>
-                
-                {/* Icon Animation */}
                 <div className="text-4xl mb-6 transition-transform duration-500 group-hover:scale-125 group-hover:rotate-[10deg] inline-block">
                   {service.icon}
                 </div>
-                
                 <h3 className="text-xl font-bold mb-4 group-hover:text-purple-400 transition-colors">
                   {service.title}
                 </h3>
                 <p className="text-gray-500 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
                   {service.desc}
                 </p>
-
-                
                 <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-purple-500 group-hover:w-full transition-all duration-700"></div>
               </div>
             ))}
@@ -144,11 +181,9 @@ const Hero = () => {
         </div>
       </section>
 
-    
+      {/* ===== Footer ===== */}
       <footer className="bg-black border-t border-white/10 pt-32 pb-12">
         <div className="max-w-7xl mx-auto px-6 lg:px-24 grid grid-cols-1 md:grid-cols-2 gap-24 mb-20">
-          
-          {/* Service List with Hover Slide */}
           <div className="space-y-8">
             <h4 className="text-purple-500 font-mono text-xs tracking-[0.4em] uppercase">Service Index</h4>
             <div className="space-y-4">
@@ -163,7 +198,6 @@ const Hero = () => {
             </div>
           </div>
 
-          
           <div className="md:text-right flex flex-col md:items-end">
             <h4 className="text-purple-500 font-mono text-xs tracking-[0.4em] uppercase mb-10">Direct Contact</h4>
             <a href="mailto:ops@quickform.ai" className="text-4xl font-light text-gray-100 hover:text-purple-400 transition-colors mb-4">ops@quickform.ai</a>

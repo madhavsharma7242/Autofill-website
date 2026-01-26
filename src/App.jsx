@@ -1,41 +1,57 @@
-import React from 'react'
-import { Route,Routes } from 'react-router-dom'
+import React from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from "framer-motion";
 import Header from './components/Header';
 import Home from './pages/Home';
 import Changelog from './pages/Changelog';
 import Documentation from './pages/Documentation';
 import Support from './pages/Support';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 
+const pageVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.4, ease: "easeOut" } 
+  },
+  exit: { 
+    opacity: 0, 
+    y: -20, 
+    transition: { duration: 0.3, ease: "easeIn" } 
+  }
+};
 
-
-
+const AnimatedPage = ({ children }) => (
+  <motion.div
+    variants={pageVariants}
+    initial="initial"
+    animate="animate"
+    exit="exit"
+  >
+    {children}
+  </motion.div>
+);
 
 const App = () => {
+  const location = useLocation();
+
   return (
-     <>
-     <Header />
-    <div>
-
-    
-      <Routes>
-        <Route path='/' element={<Home />}/>
-        <Route path='/Documentation' element={<Documentation />}/>
-        <Route path='/Support' element={<Support />}/>
-        <Route path='/Changelog' element={<Changelog />}/>
-        
-        
-        
-        
-        
-        
-
-        
-
-      </Routes>
-    </div>
+    <>
+      <Header />
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path='/' element={<AnimatedPage><Home /></AnimatedPage>} />
+          <Route path='/Documentation' element={<AnimatedPage><Documentation /></AnimatedPage>} />
+          <Route path='/Support' element={<AnimatedPage><Support /></AnimatedPage>} />
+          <Route path='/Changelog' element={<AnimatedPage><Changelog /></AnimatedPage>} />
+          <Route path='/SignIn' element={<AnimatedPage><SignIn /></AnimatedPage>} />
+          <Route path='/SignUp' element={<AnimatedPage><SignUp /></AnimatedPage>} />
+        </Routes>
+      </AnimatePresence>
     </>
-  )
-}
+  );
+};
 
-
-export default App
+export default App;
