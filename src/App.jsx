@@ -9,6 +9,14 @@ import Support from './pages/Support';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 
+
+import Faqs from './SupportPages/Faqs';
+import Contact from './SupportPages/Contact';
+import About from './SupportPages/About';
+import Privacy from './SupportPages/Privacy';
+import Terms from './SupportPages/Terms';
+import Security from './SupportPages/Security';
+
 const pageVariants = {
   initial: { opacity: 0, y: 20 },
   animate: { 
@@ -48,6 +56,14 @@ const App = () => {
           <Route path='/Changelog' element={<AnimatedPage><Changelog /></AnimatedPage>} />
           <Route path='/SignIn' element={<AnimatedPage><SignIn /></AnimatedPage>} />
           <Route path='/SignUp' element={<AnimatedPage><SignUp /></AnimatedPage>} />
+
+          
+          <Route path='/Support/faqs' element={<AnimatedPage><Faqs /></AnimatedPage>} />
+          <Route path='/Support/contact' element={<AnimatedPage><Contact /></AnimatedPage>} />
+          <Route path='/Support/about' element={<AnimatedPage><About /></AnimatedPage>} />
+          <Route path='/Support/privacy' element={<AnimatedPage><Privacy /></AnimatedPage>} />
+          <Route path='/Support/terms' element={<AnimatedPage><Terms /></AnimatedPage>} />
+          <Route path='/Support/security' element={<AnimatedPage><Security /></AnimatedPage>} />
         </Routes>
       </AnimatePresence>
     </>
