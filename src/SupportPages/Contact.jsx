@@ -22,7 +22,7 @@ const Contact = () => {
   return (
     <motion.div className="p-10 min-h-screen bg-[#0a0a0c] text-white" variants={containerVariants} initial="hidden" animate="show">
       <motion.h1 className="text-4xl font-bold mb-8 text-center" variants={itemVariants}>
-        Contact Us
+
       </motion.h1>
 
       <motion.div className="space-y-4 max-w-3xl mx-auto">
